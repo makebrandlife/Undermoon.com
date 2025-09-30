@@ -23,17 +23,30 @@
   dir.position.set(5, 3, 5);
   scene.add(dir);
 
-  // Sphere with subtle emissive glow
-  const geometry = new THREE.SphereGeometry(3, 64, 64);
-  const material = new THREE.MeshStandardMaterial({
-    color: 0x0b1220,
-    emissive: 0x072534,
-    emissiveIntensity: 0.35,
-    roughness: 0.8,
-    metalness: 0.2
-  });
-  const globe = new THREE.Mesh(geometry, material);
-  scene.add(globe);
+  // Globe with textures
+const textureLoader = new THREE.TextureLoader();
+const earthTexture = textureLoader.load('assets/earth-day.jpg');
+const nightTexture = textureLoader.load('assets/earth-night.jpg');
+
+const geometry = new THREE.SphereGeometry(3, 64, 64);
+const material = new THREE.MeshPhongMaterial({
+  map: earthTexture,
+  emissiveMap: nightTexture,
+  emissive: 0xffffff,
+  emissiveIntensity: 0.6,
+  shininess: 5
+});
+const globe = new THREE.Mesh(geometry, material);
+scene.add(globe);
+
+// Lights
+const ambient = new THREE.AmbientLight(0xffffff, 0.3);
+scene.add(ambient);
+
+const directional = new THREE.DirectionalLight(0x3b82f6, 1);
+directional.position.set(5, 3, 5);
+scene.add(directional);
+
 
   // Star field background
   const starsGeom = new THREE.BufferGeometry();
